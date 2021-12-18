@@ -7,6 +7,7 @@ const indexRouter = require('./routes/index');
 
 const app = express();
 
+/* 이부분은 서버를 시작할때마다 매번 스키마를 건드려서 설정 변경
 const { sequelize } = require('./models');
 
 sequelize.sync({ force: false })
@@ -16,6 +17,7 @@ sequelize.sync({ force: false })
 	.catch((error) => {
 		console.error(error);
 	});
+*/
 
 app.use(logger('dev'));
 app.use(express.json());
