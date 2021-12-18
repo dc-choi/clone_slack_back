@@ -1,11 +1,11 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 
-var app = express();
+const app = express();
 
 const { sequelize } = require('./models');
 
@@ -24,5 +24,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+
+app.use((err, req, res, next) => {
+	console.log(err);
+	res.status(404).send(err);
+});
+
+app.use((err, req, res, next) => {
+	console.error(err);
+	res.status(500).send('Something broke!')
+});
 
 module.exports = app;
