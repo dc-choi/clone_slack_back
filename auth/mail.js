@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
-const senderInfo = require('../config/email.json');
+require('../config/env');
+
 // 메일발송 객체
 let mailSender = {
   // 메일발송 함수
@@ -11,13 +12,13 @@ let mailSender = {
       secure: false,  
       requireTLS: true ,
       auth: {
-        user: senderInfo.user,  // 보내는 메일의 주소
-        pass: senderInfo.pass   // 보내는 메일의 비밀번호
+        user: process.env.MAIL_USER,  // 보내는 메일의 주소
+        pass: process.env.MAIL_PASSWORD   // 보내는 메일의 비밀번호
       }
     });
     // 메일 옵션
     let mailOptions = {
-      from: senderInfo.user, // 보내는 메일의 주소
+      from: 'slock_clone_coding@coding.org', // 보내는 메일의 주소
       to: param.toEmail, // 수신할 이메일
       subject: param.subject, // 메일 제목
       text: param.text // 메일 내용

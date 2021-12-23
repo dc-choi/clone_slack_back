@@ -1,7 +1,14 @@
 const express = require('express');
 const router = express.Router();
+let Workspace = require('../models/index').models.workspace;
 
 let mailer = require('../auth/mail');
+
+router.get('/', async(req, res, next) => {
+  console.log(Workspace);
+  const data = await Workspace.findAll();
+  res.send({data});
+});
 
 router.post('/mail', async(req, res) => {
   const { email }  = req.body;
