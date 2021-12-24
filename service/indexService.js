@@ -16,5 +16,5 @@ module.exports = {
     mailer.sendGmail(emailParam);
 
     return { ranNum }
-	}
+  }
 }
