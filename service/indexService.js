@@ -2,7 +2,7 @@ let mailer = require('../auth/mail');
 
 module.exports = {
   async sendMail(params) {
-		const { email }  = params;
+    const { email }  = params;
     const min = 111111;
     const max = 999999;
     const ranNum = Math.floor(Math.random() * (max - min - 1)) + min;
