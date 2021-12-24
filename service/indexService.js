@@ -1,7 +1,7 @@
 let mailer = require('../auth/mail');
 
 module.exports = {
-	async sendMail(params) {
+  async sendMail(params) {
 		const { email }  = params;
     const min = 111111;
     const max = 999999;
