@@ -20,7 +20,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     ch_create_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: sequelize.NOW
     },
     ch_workspace: {
       type: DataTypes.STRING(20),

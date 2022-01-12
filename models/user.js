@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     us_password: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(120),
       allowNull: false
     },
     us_description: {
@@ -28,7 +28,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     us_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: sequelize.literal('now()')
     },
     us_img: {
       type: DataTypes.STRING(50),

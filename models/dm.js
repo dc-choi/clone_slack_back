@@ -12,11 +12,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     dm_create_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: sequelize.NOW
     },
     dm_update_date: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      defaultValue: sequelize.NOW
     },
     dm_sender_code: {
       type: DataTypes.STRING(20),

@@ -4,8 +4,13 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const session = require('express-session')
+const passport = require('passport');
 
 const indexRouter = require('./routes/index');
+const loginRouter = require('./routes/login');
+const passportConfig = require('./passport');
+require('./config/env');
 
 const app = express();
 
@@ -24,10 +29,22 @@ sequelize.sync({ force: false })
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.SECRET));
 app.use(express.static(path.join(__dirname, 'public')));
+passportConfig(); // passport의 설정 적용
+
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
+
+// 이 부분의 설정은 반드시 세션 설정 뒤에 사용해야 한다.
+app.use(passport.initialize()); // 요청에 passport 설정을 넣는다.
+app.use(passport.session()); // req.session에 passport 정보를 저장한다.
 
 app.use('/api', indexRouter);
+app.use('/api/auth', loginRouter);
 
 app.use(cors({
   origin: ['*'],
