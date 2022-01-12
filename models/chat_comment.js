@@ -8,11 +8,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     chat_comment_create_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: sequelize.NOW
     },
     chat_comment_update_date: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      defaultValue: sequelize.NOW
     },
     chat_comment_contents: {
       type: DataTypes.TEXT,
