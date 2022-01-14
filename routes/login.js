@@ -6,9 +6,14 @@ const { isLoggedIn, isNotLoggedIn } = require('../auth/isLogged');
 const loginService = require('../service/loginService');
 
 router.post('/signup', isNotLoggedIn, async(req, res) => {
-  const params = req.body;
-  const str = await loginService.signup(params);
-  res.status(200).send(str);
+  try {
+    const params = req.body;
+    const str = await loginService.signup(params);
+    res.status(200).send(str);
+  } catch (error) {
+    res.status(500).send('/api/auth/signup is broke!');
+    next(error);
+  }
 });
 
 router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
