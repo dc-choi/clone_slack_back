@@ -10,9 +10,7 @@ module.exports = {
       return '회원가입이 이미 되어 있습니다.';
     }
     const name = us_email.split('@')[0];
-    console.log(name);
-    const hash = await bcrypt.hash(us_password, 3);
-    console.log(hash);
+    const hash = await bcrypt.hash(us_password, 12);
     await user.create({
       us_code,
       us_email,
