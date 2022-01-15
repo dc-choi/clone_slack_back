@@ -52,13 +52,12 @@ app.use(cors({
 }));
 
 app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(404).send(err.message);
-});
-
-app.use((err, req, res, next) => {
-	console.error(err);
-	res.status(500).send(err.message);
+  if (res.statusCode === 500)
+	  res.status(500).send(err.message);
+  if (res.statusCode === 401)
+    res.status(401).send(err.message);
+  if (res.statusCode === 404)
+    res.status(404).send(err.message);
 });
 
 module.exports = app;
