@@ -53,7 +53,7 @@ app.use(cors({
 
 app.use((err, req, res, next) => {
   if (res.statusCode === 500)
-	  res.status(500).send(err.message);
+    res.status(500).send(err.message);
   if (res.statusCode === 401)
     res.status(401).send(err.message);
   if (res.statusCode === 404)
