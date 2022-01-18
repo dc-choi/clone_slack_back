@@ -6,10 +6,12 @@ const logger = require('morgan');
 const cors = require('cors');
 const session = require('express-session')
 const passport = require('passport');
+const MySQLStore = require('express-mysql-session')(session);
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const passportConfig = require('./passport');
+const { Store } = require('express-session');
 require('./config/env');
 
 const app = express();
@@ -33,10 +35,20 @@ app.use(cookieParser(process.env.SECRET));
 app.use(express.static(path.join(__dirname, 'public')));
 passportConfig(); // passport의 설정 적용
 
+const options = {
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USERNAME,
+	password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+};
+
+const sessionStore = new MySQLStore(options);
+
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
+  store: sessionStore,
 }));
 
 // 이 부분의 설정은 반드시 세션 설정 뒤에 사용해야 한다.
