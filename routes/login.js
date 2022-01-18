@@ -3,6 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 
 const { isLoggedIn, isNotLoggedIn } = require('../auth/isLogged');
+const user = require('../models/user');
 const loginService = require('../service/loginService');
 
 router.post('/localSignup', isNotLoggedIn, async(req, res, next) => {
@@ -37,6 +38,18 @@ router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
     });
   })(req, res, next);
 });
+
+router.post('/googleLogin', isNotLoggedIn, async(req, res, next) => {
+  console.log(req.body);
+  try {
+    const str = await loginService.googleLogin(req, res, next);
+    res.status(200).send(str);
+  } catch (error) {
+    res.status(500);
+    next(error);
+  }
+});
+
 
 router.get('/logout', isLoggedIn, (req, res) => {
   req.logout();

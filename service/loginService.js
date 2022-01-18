@@ -20,5 +20,21 @@ module.exports = {
       us_workspace: 'ws_220112_123456'
     });
     return '회원가입 완료.';
+  },
+  async googleLogin(req, res, next) { //google login, signup 한번에 구현
+    const { us_code, us_sns_id, us_email, us_name } = req.body;
+    const exSnsid = await user.findOne({ where: { us_sns_id }});
+    if (!exSnsid) {
+      await user.create({
+        us_code,
+        us_email,
+        us_name,
+        us_sns_id, //password null
+        us_admin: 'Y',
+        us_ws_invite: 'Y',
+        us_workspace: 'ws_220112_123456'
+      })
+    }
+    return '로그인 완료';
   }
 }

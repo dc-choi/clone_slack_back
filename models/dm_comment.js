@@ -8,13 +8,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     dm_comment_create_date: {
       type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.NOW
+      allowNull: false
     },
     dm_comment_update_date: {
       type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: sequelize.NOW
+      allowNull: true
     },
     dm_comment_contents: {
       type: DataTypes.TEXT,
