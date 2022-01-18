@@ -11,7 +11,6 @@ const MySQLStore = require('express-mysql-session')(session);
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const passportConfig = require('./passport');
-const { Store } = require('express-session');
 require('./config/env');
 
 const app = express();
@@ -38,7 +37,7 @@ passportConfig(); // passport의 설정 적용
 const options = {
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USERNAME,
-	password: process.env.MYSQL_PASSWORD,
+  password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
 };
 
