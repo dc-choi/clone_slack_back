@@ -10,7 +10,7 @@ let _file = require("./file");
 let _user = require("./user");
 let _workspace = require("./workspace");
 
-let initModels = (sequelize) => {
+function initModels(sequelize) {
   let channel = _channel(sequelize, DataTypes);
   let channeluserlist = _channeluserlist(sequelize, DataTypes);
   let chat = _chat(sequelize, DataTypes);
@@ -60,7 +60,6 @@ let initModels = (sequelize) => {
     workspace,
   };
 }
-
 module.exports = initModels;
 module.exports.initModels = initModels;
 module.exports.default = initModels;

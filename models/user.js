@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     us_password: {
       type: DataTypes.STRING(120),
-      allowNull: false
+      allowNull: true
     },
     us_description: {
       type: DataTypes.TEXT,
@@ -28,8 +28,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     us_date: {
       type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal('now()')
+      defaultValue: sequelize.literal('now()'),
+      allowNull: false
     },
     us_img: {
       type: DataTypes.STRING(50),
@@ -46,6 +46,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'workspace',
         key: 'ws_code'
       }
+    },
+    us_sns_id: {
+      type: DataTypes.STRING(120),
+      allowNull: true
+    },
+    us_ws_invite: {
+      type: DataTypes.ENUM('Y','N'),
+      allowNull: false
     }
   }, {
     sequelize,
