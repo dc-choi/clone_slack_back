@@ -52,8 +52,16 @@ router.post('/googleLogin', isNotLoggedIn, async(req, res, next) => {
 
 
 router.get('/logout', isLoggedIn, (req, res) => {
-  req.logout();
-  req.session.destroy();
+  try {
+    req.logout();
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      res.status(200).send('로그아웃을 완료하였습니다.');
+    });
+  } catch (error) {
+    res.status(500);
+    next(error);
+  }
 });
 
 module.exports = router;
