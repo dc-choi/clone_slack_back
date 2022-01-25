@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const user = require('../models/index').models.user;
@@ -22,14 +23,19 @@ module.exports = {
     return '회원가입 완료.';
   },
   async googleLogin(req, res, next) { //google login, signup 한번에 구현
-    const { us_code, us_sns_id, us_email, us_name } = req.body;
-    const exSnsid = await user.findOne({ where: { us_sns_id }});
+    const { id_token } = req.body.tokenObj;
+    const verifyToken = jwt.decode(id_token);
+    console.log(verifyToken);
+    if (!verifyToken.email_verified){
+      return '유효하지 않는 회원입니다.';
+    }
+    const exSnsid = await user.findOne({ where: { us_sns_id : verifyToken.jti }});
     if (!exSnsid) {
       await user.create({
-        us_code,
-        us_email,
-        us_name,
-        us_sns_id, //password null
+        us_code: `us_220118_123456`,
+        us_email: verifyToken.email,
+        us_name: verifyToken.name,
+        us_sns_id: verifyToken.jti, //password null
         us_admin: 'Y',
         us_ws_invite: 'Y',
         us_workspace: 'ws_220112_123456'

@@ -40,9 +40,9 @@ router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
 });
 
 router.post('/googleLogin', isNotLoggedIn, async(req, res, next) => {
-  console.log(req.body);
   try {
     const str = await loginService.googleLogin(req, res, next);
+    if (str === '유효하지 않는 회원입니다.') throw new Error(str);
     res.status(200).send(str);
   } catch (error) {
     res.status(500);
