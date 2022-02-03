@@ -3,7 +3,6 @@ const passport = require('passport');
 const router = express.Router();
 
 const { isLoggedIn, isNotLoggedIn } = require('../auth/isLogged');
-const user = require('../models/user');
 const loginService = require('../service/loginService');
 
 router.post('/localSignup', isNotLoggedIn, async(req, res, next) => {
