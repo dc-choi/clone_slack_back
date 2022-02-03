@@ -1,5 +1,8 @@
 module.exports = {
   async addPK(str) {
+    if (str === undefined) return '';
+    if (str === '') return '';
+    
     let today = new Date();
     let year = today.getFullYear().toString().substring(2);
     let month = today.getMonth() + 1;
