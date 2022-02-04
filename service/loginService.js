@@ -66,6 +66,6 @@ module.exports = {
       }
       return '로그인 완료';
     }
-    verify().catch(console.log("fuck"));
+    verify().catch(console.log(error));
   }
 }
