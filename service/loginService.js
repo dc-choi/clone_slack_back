@@ -33,7 +33,6 @@ module.exports = {
         idToken: id_token,
         audience: process.env.CLIENT_ID,
       });
-      console.log(ticket);
       const verifyToken = ticket.getPayload();
       if (!verifyToken.email_verified) {
         return '유효하지 않는 회원입니다.';
