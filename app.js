@@ -54,13 +54,13 @@ app.use(session({
 app.use(passport.initialize()); // 요청에 passport 설정을 넣는다.
 app.use(passport.session()); // req.session에 passport 정보를 저장한다.
 
-app.use('/api', indexRouter);
-app.use('/api/auth', loginRouter);
-
 app.use(cors({
-  origin: ['*'],
+  origin: '*',
   credentials: true,
 }));
+
+app.use('/api', indexRouter);
+app.use('/api/auth', loginRouter);
 
 app.use((err, req, res, next) => {
   if (res.statusCode === 500)
