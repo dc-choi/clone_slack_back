@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(process.env.CLIENT_ID);
 const { Op } = require('sequelize');
 
 const user = require('../models/index').models.user;
@@ -26,36 +28,43 @@ module.exports = {
   },
   async googleLogin(req, res, next) { //google login, signup 한번에 구현
     const { id_token } = req.body.tokenObj;
-    const verifyToken = jwt.decode(id_token);
-    if (!verifyToken.email_verified) {
-      return '유효하지 않는 회원입니다.';
-    }
-    const exSnsid = await user.findOne({
-      where: {
-        [Op.and]: [{us_email: verifyToken.email}, {us_sns_id: verifyToken.sub}] 
-      }
-    });
-    if (!exSnsid) {
-      let us_code = await PK.addPK('us');
-      let check = await user.findOne({
-        where: { us_code }
+    async function verify() {
+      const ticket = await client.verifyIdToken({
+        idToken: id_token,
+        audience: process.env.CLIENT_ID,
       });
-      while (check != null) {
-        us_code = await PK.addPK('us');
-        check = await user.findOne({
+      const verifyToken = ticket.getPayload();
+      if (!verifyToken.email_verified) {
+        return '유효하지 않는 회원입니다.';
+      }
+      const exSnsid = await user.findOne({
+        where: {
+          [Op.and]: [{us_email: verifyToken.email}, {us_sns_id: verifyToken.sub}] 
+        }
+      });
+      if (!exSnsid) {
+        let us_code = await PK.addPK('us');
+        let check = await user.findOne({
           where: { us_code }
         });
+        while (check != null) {
+          us_code = await PK.addPK('us');
+          check = await user.findOne({
+            where: { us_code }
+          });
+        }
+        await user.create({
+          us_code,
+          us_email: verifyToken.email,
+          us_name: verifyToken.name,
+          us_sns_id: verifyToken.sub, //password null
+          us_admin: 'Y',
+          us_ws_invite: 'Y',
+          us_workspace: 'ws_220112_123456'
+        })
       }
-      await user.create({
-        us_code,
-        us_email: verifyToken.email,
-        us_name: verifyToken.name,
-        us_sns_id: verifyToken.sub, //password null
-        us_admin: 'Y',
-        us_ws_invite: 'Y',
-        us_workspace: 'ws_220112_123456'
-      })
+      return '로그인 완료';
     }
-    return '로그인 완료';
+    verify().catch(console.log(error));
   }
 }
