@@ -6,11 +6,12 @@ module.exports = {
   async getWorkspaceObj(req, res, next) {
     const workspaceObj = await user.findAll({
       include: [
-        {model: workspace, as: 'us_workspace_workspace', attributes: ['ws_name']}
+        {model: workspace, as: 'us_workspace_workspace', attributes: []}
       ],
       attributes: [
-        ['us_workspace', 'usWorkspace'],
-        [sequelize.fn('COUNT', sequelize.col('us_workspace')), 'wsCount']
+        ['us_workspace', 'workspaceCode'],
+        [sequelize.col('us_workspace_workspace.ws_name'), 'workspaceName'],
+        [sequelize.fn('COUNT', sequelize.col('us_workspace')), 'workspaceCount']
       ],
       where: {
         us_ws_invite: 'Y'
@@ -22,11 +23,12 @@ module.exports = {
   async getInviteObj(req, res, next) {
     const inviteObj = await user.findAll({
       include: [
-        {model: workspace, as: 'us_workspace_workspace', attributes: ['ws_name']}
+        {model: workspace, as: 'us_workspace_workspace', attributes: []}
       ],
       attributes: [
-        ['us_workspace', 'usWorkspace'],
-        [sequelize.fn('COUNT', sequelize.col('us_workspace')), 'wsCount']
+        ['us_workspace', 'workspaceCode'],
+        [sequelize.col('us_workspace_workspace.ws_name'), 'workspaceName'],
+        [sequelize.fn('COUNT', sequelize.col('us_workspace')), 'workspaceCount']
       ],
       where: {
         us_ws_invite: 'N'
