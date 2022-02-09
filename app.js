@@ -10,6 +10,7 @@ const MySQLStore = require('express-mysql-session')(session);
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
+const workSpaceRouter = require('./routes/workspace');
 const passportConfig = require('./passport');
 require('./config/env');
 
@@ -61,6 +62,7 @@ app.use(cors({
 
 app.use('/api', indexRouter);
 app.use('/api/auth', loginRouter);
+app.use('/api/workSpace', workSpaceRouter);
 
 app.use((err, req, res, next) => {
   if (res.statusCode === 500)
