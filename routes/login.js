@@ -38,17 +38,15 @@ router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/googleLogin', isNotLoggedIn, async(req, res, next) => {
-  try {
-    const str = await loginService.googleLogin(req, res, next);
-    if (str === '유효하지 않는 회원입니다.') throw new Error(str);
-    res.status(200).send(str);
-  } catch (error) {
-    res.status(500);
-    next(error);
-  }
-});
+router.get('/googleLogin',
+ passport.authenticate("google", { scope: ["email", "profile"], prompt: 'select_account' })
+);
 
+router.get('/googleLogin/callback', passport.authenticate('google', {
+  failureRedirect: "http://localhost:3000/signin/",
+}), (req, res) => {
+  res.redirect("http://localhost:3000/signin/SetupWorkspace/");
+});
 
 router.get('/logout', isLoggedIn, (req, res) => {
   try {

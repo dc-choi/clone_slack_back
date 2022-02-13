@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID);
 const { Op } = require('sequelize');
@@ -63,6 +64,7 @@ module.exports = {
           us_workspace: 'ws_220112_123456'
         })
       }
+      req.session.us_email = verifyToken.email;
       return '로그인 완료';
     }
     verify().catch(console.log(error));
