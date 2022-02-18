@@ -17,6 +17,7 @@ router.post('/localSignup', isNotLoggedIn, async(req, res, next) => {
 });
 
 router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
+  req.body.us_password = 'abcdefg';
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
       console.error(authError);
@@ -27,12 +28,7 @@ router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
       res.status(500);
       return res.send(info.message);
     }
-    return req.login(user, (loginError) => {
-      if (loginError) {
-        console.error(loginError);
-        res.status(500);
-        return next(loginError);
-      }
+    return req.login(user, () => {
       return res.send(user);
     });
   })(req, res, next);

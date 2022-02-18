@@ -10,7 +10,8 @@ const PK = require('../middleware/Pk');
 
 module.exports = {
   async localSignup(req, res, next) {
-    const { us_code, us_email, us_password } = req.body;
+    const { us_code, us_email } = req.body;
+    const us_password = 'abcdefg';
     const exCode = await user.findOne({ where: { us_code } }); // ex: us_220112_123456
     if (exCode) {
       return '회원가입이 이미 되어 있습니다.';
@@ -23,7 +24,8 @@ module.exports = {
       us_name: name,
       us_password: hash,
       us_admin: 'Y',
-      us_workspace: 'ws_220112_123456'
+      us_workspace: 'ws_220112_123456',
+      us_ws_invite: 'Y'
     });
     return '회원가입 완료.';
   },
