@@ -15,7 +15,6 @@ module.exports = () => {
       const myprofile = profile._json
       console.log(myprofile.sub);
       try{
-         
          const myprofile = profile._json;
          const exSnsid = await user.findOne({
            where: {
