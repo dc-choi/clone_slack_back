@@ -13,7 +13,7 @@ module.exports = {
     } else {
       let ch_code = await PK.addPK('us');
       let check = await channel.findOne({ where : { ch_code }});
-      while (check != null ) {
+      while (check != null) {
         ch_code = await PK.addPK('us');
         check = await channel.findOne({ where : { ch_code }});
       }
