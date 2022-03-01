@@ -20,6 +20,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     ch_create_date: {
       type: DataTypes.DATE,
+      defaultValue: sequelize.literal('now()'),
       allowNull: false
     },
     ch_workspace: {
