@@ -49,6 +49,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: sessionStore,
+  cookie: {
+    secure: true,
+    sameSite: 'none'
+  },
 }));
 
 // 이 부분의 설정은 반드시 세션 설정 뒤에 사용해야 한다.
@@ -56,7 +60,7 @@ app.use(passport.initialize()); // 요청에 passport 설정을 넣는다.
 app.use(passport.session()); // req.session에 passport 정보를 저장한다.
 
 app.use(cors({
-  origin: '*',
+  origin: true,
   credentials: true,
 }));
 

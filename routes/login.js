@@ -16,7 +16,7 @@ router.post('/localSignup', isNotLoggedIn, async(req, res, next) => {
   }
 });
 
-router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
+router.post('/localSignin', isNotLoggedIn, async(req, res, next) => {
   req.body.us_password = 'abcdefg';
   passport.authenticate('local', (authError, user, info) => {
     if (authError) {
@@ -35,13 +35,13 @@ router.post('/localLogin', isNotLoggedIn, async(req, res, next) => {
 });
 
 router.get('/googleLogin',
- passport.authenticate("google", { scope: ["email", "profile"], prompt: 'select_account' })
+  passport.authenticate("google", { scope: ["email", "profile"], prompt: 'select_account' })
 );
 
 router.get('/googleLogin/callback', passport.authenticate('google', {
   failureRedirect: "http://localhost:3000/signin/",
 }), (req, res) => {
-  res.redirect("http://localhost:3000/signin/SetupWorkspace/");
+  res.redirect("http://localhost:3000/signin/Workspaces/");
 });
 
 router.get('/logout', isLoggedIn, (req, res) => {
