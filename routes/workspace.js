@@ -3,8 +3,7 @@ const router = express.Router();
 
 const workspaceService = require('../service/workspaceService');
 const channelService = require('../service/channelService');
-const channel = require('../models/channel').channel;
-const { Op } = require('sequelize');
+const { isLoggedIn } = require('../auth/isLogged');
 
 router.post('/userWorkspaces', async(req, res, next) => {
   try {
@@ -25,11 +24,21 @@ router.post('/userWorkspaces', async(req, res, next) => {
   }
 });
 //채널
-router.post('/makeChannel', async(req, res, next) => {
+router.post('/makeChannel', isLoggedIn, async(req, res, next) => {
   try {
     const str = await channelService.makeChannel(req, res, next);
     if (str === '같은 이름의 채널이 존재합니다.') throw new Error(str);
     res.status(200).send(str);
+  } catch (error) {
+    res.status(500);
+    next(error);
+  }
+})
+
+router.post('/searchChannel', isLoggedIn, async(req, res, next) => {
+  try {
+    const str = await channelService.searchChannel(req, res, next);
+    if (str === '검색된 채널 이름 또는 설명이 없습니다.') throw new Error(str);
   } catch (error) {
     res.status(500);
     next(error);
