@@ -1,6 +1,8 @@
+const { UnknownConstraintError } = require('sequelize');
 const sequelize = require('sequelize');
 
-const channel = require('../models/index').models.channel;
+const { user, channel, channeluserlist } = require('../models/index').models;
+const Op = require('sequelize').Op;
 const PK = require('../middleware/PK');
 
 module.exports = {
@@ -23,8 +25,49 @@ module.exports = {
         ch_description,
         ch_writer: writer,
         ch_workspace: 'ws_220112_123456'
-      })
+      });
       return '채널 생성 완료.';
+    }
+  },
+  async searchChannel(req, res, next) {
+    let searchWord = req.body.searchWord;
+    let haveCh = await channel.findOne({ //ch_name or ch_description 유무 확인
+        where: {
+          [Op.or]: [
+            {
+              ch_name: {
+                [Op.like]: "%"+searchWord+"%"
+              }
+            },
+            {
+              ch_description: {
+                [Op.like]: "%"+searchWord+"%"
+              }
+            }
+          ]
+        }
+      })
+    if(!haveCh) {
+      return '검색된 채널 이름 또는 설명이 없습니다.'
+    } else {
+      haveCh = await channel.findAll({ //ch_name or ch_description 존재 한다면 searchWord가 포함되는 것 모두 찾기
+        where: {
+          [Op.or]: [
+            {
+              ch_name: {
+                [Op.like]: "%"+searchWord+"%"
+              }
+            },
+            {
+              ch_description: {
+                [Op.like]: "%"+searchWord+"%"
+              }
+            }
+          ]
+        },
+        order: [['ch_name', 'ASC']] //channel name 오름차순 정렬
+      })
+      return res.json(haveCh); //json 형태로 전달
     }
   }
 }
