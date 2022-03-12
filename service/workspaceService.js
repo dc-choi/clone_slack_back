@@ -36,5 +36,20 @@ module.exports = {
     });
     if (!inviteObj) return 'DB접근에 실패했습니다.'
     return inviteObj;
+  },
+  async inviteUser(req, res, next) {
+    const { us_email } = req.body;
+    const checkUser = await user.findOne({
+      where: { us_email }
+    })
+    if (!checkUser)
+      return '유저 정보가 없습니다.'
+    else {
+      await user.update(
+        {us_ws_invite: 'Y'},
+        {where: { us_email }}
+      )
+      return '초대 성공'
+    }
   }
 }
