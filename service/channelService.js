@@ -8,8 +8,14 @@ const PK = require('../middleware/PK');
 module.exports = {
   async makeChannel(req, res, next) {
     const { ch_name, ch_description } = req.body;
-    const writer = req.session.passport.user.split('@')[0]; //session 저장된 user info
+    const writer = req.session.passport.user; //session 저장된 user info req.session.passport.user.split('@')[0]
     const exCh = await channel.findOne({ where: { ch_name }});
+    const User_us_code = await user.findOne({
+      where: {
+        us_email: writer 
+      },
+      attributes: ['us_email','us_code']
+    })
     if (exCh) {
       return '같은 이름의 채널이 존재합니다.';
     } else {
@@ -23,9 +29,13 @@ module.exports = {
         ch_code,
         ch_name,
         ch_description,
-        ch_writer: writer,
+        ch_writer: writer.split('@')[0],
         ch_workspace: 'ws_220112_123456'
       });
+      await channeluserlist.create({
+        User_us_code: User_us_code.us_code,
+        Channel_ch_code: ch_code 
+      }) 
       return '채널 생성 완료.';
     }
   },
