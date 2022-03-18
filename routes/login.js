@@ -24,27 +24,25 @@ router.post('/localSignin', isNotLoggedIn, async(req, res, next) => {
       res.status(500);
       return next(authError);
     }
-    if (!user) {
-      res.status(500);
-      return res.send(info.message);
-    }
+    if (!user)
+      return res.status(500).send(info.message);
     return req.login(user, () => {
       return res.send(user);
     });
   })(req, res, next);
 });
 
-router.get('/googleLogin',
+router.get('/googleLogin', isNotLoggedIn,
   passport.authenticate("google", { scope: ["email", "profile"], prompt: 'select_account' })
 );
 
-router.get('/googleLogin/callback', passport.authenticate('google', {
-  failureRedirect: "http://localhost:3000/signin/",
+router.get('/googleLogin/callback', isNotLoggedIn, passport.authenticate('google', {
+  failureRedirect: "https://localhost:3000/signin/",
 }), (req, res) => {
-  res.redirect("http://localhost:3000/signin/Workspaces/");
+  res.redirect("https://localhost:3000/signin/Workspaces/");
 });
 
-router.get('/logout', isLoggedIn, (req, res) => {
+router.get('/logout', isLoggedIn, (req, res, next) => {
   try {
     req.logout();
     req.session.destroy(() => {
