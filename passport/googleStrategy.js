@@ -12,8 +12,6 @@ module.exports = () => {
     callbackURL: process.env.GOOGLE_REDIRECT,
   },
   async (accessToken, refreshToken, profile, done) => {
-    const myprofile = profile._json
-    console.log(myprofile.sub);
     try{
         const myprofile = profile._json;
         const exSnsid = await user.findOne({
