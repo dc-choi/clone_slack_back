@@ -15,9 +15,7 @@ module.exports = () => {
     try{
         const myprofile = profile._json;
         const exSnsid = await user.findOne({
-          where: {
-            [Op.and]: [{us_email: myprofile.email}, {us_sns_id: myprofile.sub}] 
-          }
+          where: { us_email: myprofile.email }
         });
         if (exSnsid) {
           done(null, exSnsid);
