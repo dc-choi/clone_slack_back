@@ -27,7 +27,7 @@ router.post('/userWorkspaces', async(req, res, next) => {
 router.post('/userWorkspaces/inviteUser', isLoggedIn, async(req, res, next) => {
   try {
     const str = await workspaceService.inviteUser(req, res, next);
-    if (str === '유저 정보가 없습니다.') throw new Error(str);
+    if (str === '유저 정보가 없습니다.' || str === '관리자가 아니면 초대 할 수 없습니다.' || str === '이미 유저가 해당 워크스페이스에 초대 되어있습니다.') throw new Error(str);
     res.status(200).send(str);
   }
   catch (error) {
