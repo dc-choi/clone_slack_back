@@ -39,7 +39,7 @@ router.get('/googleLogin', isNotLoggedIn,
 router.get('/googleLogin/callback', isNotLoggedIn, passport.authenticate('google', {
   failureRedirect: "https://localhost:3000/signin/",
 }), (req, res) => {
-  res.redirect("https://localhost:3000/signin/Workspaces/");
+  res.redirect("https://localhost:3000/Workspaces/");
 });
 
 router.get('/logout', isLoggedIn, (req, res, next) => {
