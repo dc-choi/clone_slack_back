@@ -12,14 +12,10 @@ module.exports = () => {
     callbackURL: process.env.GOOGLE_REDIRECT,
   },
   async (accessToken, refreshToken, profile, done) => {
-    const myprofile = profile._json
-    console.log(myprofile.sub);
     try{
         const myprofile = profile._json;
         const exSnsid = await user.findOne({
-          where: {
-            [Op.and]: [{us_email: myprofile.email}, {us_sns_id: myprofile.sub}] 
-          }
+          where: { us_email: myprofile.email }
         });
         if (exSnsid) {
           done(null, exSnsid);
